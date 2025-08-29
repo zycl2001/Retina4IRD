@@ -1,0 +1,8 @@
+count: 6
+weight: 0.974
+seed_count: 5
+
+csv_path: Your csv_path
+output_dir: Your output path
+
+label_column: 'mutant_gene_label'

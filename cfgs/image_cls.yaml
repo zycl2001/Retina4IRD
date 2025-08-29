@@ -1,0 +1,49 @@
+nb_classes: 17
+mutant_gene: 'mutant_gene'
+
+having_test_set: True
+traintest: True
+
+test: False
+eval: False
+label_column: 'mutant_gene_label'
+finetune: 'in21k'
+
+weight-cfp: "/weights/RETFound_cfp_weights.pth"
+weight-oct: "/weights/RETFound_oct_weights.pth"
+data_path: Your image_path
+csv_path: Your csv_path
+
+resume: ''
+
+output_dir: Your output path
+
+
+seed_count: 5
+epochs: 50
+batch_size: 32
+blr: 0.005
+layer_decay: 0.65
+drop_path: 0.2
+min_lr: 1e-6
+warmup_epochs: 10
+input_size: 224
+weight_decay: 0.05
+
+use_mean_pooling: True
+init_scale: 0.001
+
+
+
+log_wandb: False
+log_tensorboard: False
+wandb_project: 'eyenet-finetune-cls'
+wandb_entity: null
+wandb_run_name: IDRiD-test
+
+save_confusion_matrix: True
+
+
+model: multivit_large
+patch_size: 16
+num_global_tokens: 1
