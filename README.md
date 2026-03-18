@@ -10,7 +10,7 @@
 4. [Fine-tuning with Retina4IRD Combined Model Weights](#fine-tuning-with-retina4ird-combined-model-weights)
 5. [Prepare the datasets](#prepare-the-datasets)
 
-## Download  the pretrained weights of Retina4IRD
+## 📃Download  the pretrained weights of Retina4IRD
 Obtain the Retina4IRD pre-training weights on (https://drive.google.com/drive/folders/1WxbkPx1npybuDoNuJZdyzIkbgInWReBJ?usp=drive_link)
 
 <table><tbody>
