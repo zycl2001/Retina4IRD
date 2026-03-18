@@ -130,8 +130,8 @@ def classification_ensemble_auroc(label_column,file_names, seed, num_teams=4):
     output_df['predict'] = predicted_categories
     output_df['predict'] = output_df['predict'].astype(int)
 
-    mutant_gene_label = pd.read_csv(file_names[0], usecols=[label_column])
-    output_df[label_column] = mutant_gene_label[label_column]
+    gene_label = pd.read_csv(file_names[0], usecols=[label_column])
+    output_df[label_column] = gene_label[label_column]
 
     save_dir = f'{file_names[0].split("/cfp")[0]}/results/ensemble/seed_{seed}'
     os.makedirs(save_dir, exist_ok=True)

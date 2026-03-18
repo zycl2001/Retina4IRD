@@ -18,7 +18,7 @@ class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
 
             del self.norm
 
-
+        self.head_dist=None
     def forward_features(self, x):
         B = x.shape[0]
         x = self.patch_embed(x)

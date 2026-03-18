@@ -124,9 +124,14 @@ def get_args():
     parser.add_argument('--resume', default='',
                         help='resume from checkpoint')
 
+    parser.add_argument('--weight_cfp', default='',
+                        help='resume from checkpoint')
+    parser.add_argument('--weight_oct', default='',
+                        help='resume from checkpoint')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true', help='Perform evaluation only')
+    parser.add_argument('--combine_eyes', action='store_true', help='Perform evaluation only')
     parser.add_argument('--dist_eval', action='store_true', default=False,
                         help='Enabling distributed evaluation (recommended during training for faster monitor')
     parser.add_argument('--num_workers', default=10, type=int)
@@ -149,7 +154,7 @@ def get_args():
 
     parser.add_argument('--finetune', default='', help='finetune from checkpoint')
     parser.add_argument('--eyenet', type=str, default='')
-    parser.add_argument('--mutant_gene', type=str, default='')
+    parser.add_argument('--gene', type=str, default='')
     parser.add_argument('--label_column', default='', type=str)
 
     parser.add_argument('--auto_resume', action='store_true')
@@ -290,7 +295,7 @@ def main(args):
 
         interpolate_pos_embed_vit(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
         if args.use_mean_pooling:
             assert set(msg.missing_keys) == {'head.weight', 'head.bias', 'fc_norm.weight', 'fc_norm.bias'}
@@ -304,7 +309,7 @@ def main(args):
     model_without_ddp = model
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
-    print("Model = %s" % str(model_without_ddp))
+    # print("Model = %s" % str(model_without_ddp))
     print('number of params: {} M'.format(n_parameters / 1e6))
 
     eff_batch_size = args.batch_size * args.accum_iter * utils.get_world_size()
@@ -469,11 +474,11 @@ def run_one_time(opts,seed=0):
     opts.output_dir = os.path.join(opts.output_dir, dataset)
     if opts.finetune == 'no_load_weights':
         opts.finetune = False
-    else:
-        opts.finetune = opts.__dict__[opts.finetune]
+    # else:
+    #     opts.finetune = opts.__dict__[opts.finetune]
 
     opts.output_dir = os.path.join(opts.output_dir, f"seed_{opts.seed}")
-
+    # print(f"Output folder: {opts.output_dir}")
     if opts.output_dir:
         Path(opts.output_dir).mkdir(parents=True, exist_ok=True)
 
@@ -481,7 +486,7 @@ def run_one_time(opts,seed=0):
 
     return res, str(Path(opts.output_dir).parent)
 
-def set_mutant_gene_label(args):
+def set_gene_label(args):
     gene_mapping = {
         "ush2a": 1, "cyp4v2": 2, "abca4": 3, "rpgr": 4, "rpe65": 5,
         "rs1": 6, "prpf31": 7, "rho": 8, "rdh12": 9, "mertk": 10,
@@ -492,9 +497,9 @@ def set_mutant_gene_label(args):
 
         file_path = os.path.join(args.csv_path, file)
         df = pd.read_excel(file_path)
-        gene_col_lower = df[args.mutant_gene].str.lower()
+        gene_col_lower = df[args.gene].str.lower()
 
-        is_nan = df[args.mutant_gene].isna()
+        is_nan = df[args.gene].isna()
 
         mapped = gene_col_lower.map(gene_mapping)
 
@@ -516,20 +521,27 @@ if __name__ == '__main__':
         torch._six = _Six()
 
     opts = get_args()
+    output_dir=opts.output_dir
+    in_domains=opts.in_domains
 
     if opts.in_domains=='rgb':
         opts.data_path = os.path.join(opts.data_path,'cfp')
         opts.csv_path = os.path.join(opts.csv_path, 'cfp')
+        finetune=opts.weight_cfp
     else:
         opts.data_path = os.path.join(opts.data_path,'oct')
         opts.csv_path = os.path.join(opts.csv_path, 'oct')
+        finetune = opts.weight_oct
 
-    set_mutant_gene_label(opts)
+    set_gene_label(opts)
     seed_count=opts.seed_count
     path = ''
 
     if not opts.test and not opts.eval:
         for i in range(seed_count):
+            opts.output_dir=output_dir
+            opts.in_domains=in_domains
+            opts.finetune=finetune
             res, path = run_one_time(opts,seed=i)
             opts.finetune=os.path.join(path, f'seed_{i}', 'checkpoint-best.pth')
             model_path=os.path.join(path, f'seed_{i}')

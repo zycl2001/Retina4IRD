@@ -1,23 +1,22 @@
 nb_classes: 17
-mutant_gene: 'mutant_gene'
+gene: 'gene'
 
 having_test_set: True
 traintest: True
 
 test: False
 eval: False
-label_column: 'mutant_gene_label'
+combine_eyes: False
+label_column: 'gene_label'
 finetune: 'in21k'
 
-weight-cfp: "/weights/RETFound_cfp_weights.pth"
-weight-oct: "/weights/RETFound_oct_weights.pth"
+weight_cfp: "/weights/image_models/Retina4IRD_CFP_checkpoint.pth"
+weight_oct: "/weights/image_models/Retina4IRD_OCT_checkpoint.pth"
 data_path: Your image_path
 csv_path: Your csv_path
-
 resume: ''
 
-output_dir: Your output path
-
+output_dir: Your output_dir
 
 seed_count: 5
 epochs: 50

@@ -20,10 +20,40 @@ import warnings
 
 from joblib import dump
 warnings.filterwarnings("ignore")
-
+warnings.simplefilter("ignore")
 model_type = [['age', 'sex', 'continue_time', 'sick_age', 'genetics', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','10','11','12','13','14','15','16']]
 predict_files = ["test_predict.csv", "train_predict.csv", "val_predict.csv"]
-folders = ["cfp", "oct"]
+
+
+
+def load_model(model_path):
+    with open(model_path, 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+def load_test_data(meta_data_dir,index):
+    test_file = os.path.join(meta_data_dir, 'test_predict.csv')
+    if not os.path.exists(test_file):
+        print(f"File does not exist: {test_file}")
+        return None, None
+
+    try:
+        if test_file.endswith('.csv'):
+            test_data = pd.read_csv(test_file).copy()
+        else:
+            test_data = pd.read_excel(test_file,engine='openpyxl').copy()
+    except Exception as e:
+        print(f"Error reading file: {e}")
+        return None, None
+
+    try:
+        test_input = test_data[model_type[index]]
+        test_label = test_data['gene_label'].to_numpy().ravel()
+    except KeyError as e:
+        print(f"Column name error: {e}")
+        return None, None
+
+    return test_input, test_label
 
 def jiaQuan2(seed_count,label_column,folders,meta_data_path, result_data_path,weight, output_path,jiaquan_count_output_path):
     meta_files=predict_files
@@ -158,7 +188,7 @@ def pre_score(label_column,model_index, meta_data_dir, output_dir):
         print(f"Invalid column name in the file: {e}")
         return
     if '0' in train_input.columns:
-        columns_to_normalize = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15','16']
+        columns_to_normalize = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15','16','age', 'continue_time', 'sick_age']
         scaler = StandardScaler()
         train_input_scaled = scaler.fit_transform(train_input[columns_to_normalize])
         test_input_scaled = scaler.transform(test_input[columns_to_normalize])
@@ -175,8 +205,8 @@ def pre_score(label_column,model_index, meta_data_dir, output_dir):
         if not os.path.exists(scaler_set_path):
             os.makedirs(scaler_set_path)
 
-        scaler_path = os.path.join(scaler_set_path, 'scaler.joblib')
-        dump(scaler, scaler_path)
+        # scaler_path = os.path.join(scaler_set_path, 'scaler.joblib')
+        # dump(scaler, scaler_path)
 
 
     l0_models = [
@@ -184,12 +214,14 @@ def pre_score(label_column,model_index, meta_data_dir, output_dir):
             booster='dart',
             n_estimators=21,
             reg_lambda=0.46,
+            n_jobs=-1
         )),
         ("LightGBM", LGBMClassifier(
             num_iterations=33,
             num_leaves=8,
             lambda_l1=0.21,
             verbosity=-1,
+            n_jobs=-1
         )),
         ("KNN", KNeighborsClassifier(
             n_neighbors=9,
@@ -203,7 +235,16 @@ def pre_score(label_column,model_index, meta_data_dir, output_dir):
 
     num_folds = 3
     random_state = 100
-    model = StackingClassifier(estimators=l0_models, final_estimator=l1_model)
+
+    if args.in_domains == "rgb":
+        model_path=args.combine_weight_cfp
+        model = load_model(model_path)
+    elif args.in_domains == "oct":
+        model_path=args.combine_weight_oct
+        model = load_model(model_path)
+    else:
+        model = StackingClassifier(estimators=l0_models, final_estimator=l1_model, n_jobs=-1)
+
     cv = StratifiedKFold(n_splits=num_folds, shuffle=True, random_state=random_state)
     best_score = -1
     best_model=None
@@ -254,7 +295,7 @@ def run_one_time(args):
     output_dir = args.output_dir
     count = args.count
     weight = args.weight
-    seed_count = args.count
+    seed_count = args.seed_count
     label_column = args.label_column
     jiaquan_output_path = f"{output_dir}/jiaquan/"
     output_combination_dir = f"{output_dir}/test/"
@@ -263,6 +304,11 @@ def run_one_time(args):
     os.makedirs(jiaquan_output_path, exist_ok=True)
     os.makedirs(output_combination_dir, exist_ok=True)
     model_type_index = 0
+    if args.in_domains == "rgb":
+        folders = ["cfp"]
+    else:
+        folders = ["oct"]
+
 
     for i in range(0, count + 1):
         jiaquan_count_output_path = fr"{jiaquan_output_path}/{i}_jiaquan_Tianxin"
@@ -274,7 +320,7 @@ def run_one_time(args):
             print(folder)
             for se in range(seed_count):
                 seed = fr"seed_{se}"
-                print(seed)
+                # print(seed)
                 seed_path = os.path.join(folder_path, seed)
                 pre_score(label_column, model_type_index, seed_path, output_dir)
         if i == 0:
@@ -299,8 +345,47 @@ def run_one_time(args):
     if os.path.exists(jiaquan_output_path):
         shutil.rmtree(jiaquan_output_path)
 
+
+def test_model(args,model_path, meta_data_dir,index=0):
+    model = load_model(model_path)
+    if model is None:
+        return
+
+    test_input, test_label = load_test_data(meta_data_dir,index)
+    if test_input is None or test_label is None:
+        return
+
+    if '0' in test_input.columns:
+        columns_to_normalize = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
+                                '16','age', 'continue_time', 'sick_age']
+        scaler = StandardScaler()
+        scaler.fit_transform(test_input[columns_to_normalize])
+        train_input_scaled = scaler.transform(test_input[columns_to_normalize])
+        test_input[columns_to_normalize] = pd.DataFrame(train_input_scaled, columns=columns_to_normalize)
+
+    test_preds = model.predict_proba(test_input)
+
+    test_preds_df = pd.DataFrame(test_preds, columns=[str(i) for i in range(17)])
+    test_preds_df['gene_label'] = test_label
+    test_preds_df.to_csv(os.path.join(args.output_dir, 'test_predict.csv'), index=False)
+
+
+def run_one_test(args):
+    if args.in_domains == "rgb":
+        model_path=args.combine_weight_cfp
+        args.output_dir = os.path.join(args.output_dir, 'cfp')
+        os.makedirs(args.output_dir, exist_ok=True)
+    else:
+        model_path=args.combine_weight_oct
+        args.output_dir = os.path.join(args.output_dir, 'oct')
+        os.makedirs(args.output_dir, exist_ok=True)
+
+    test_model(args,model_path,args.csv_path,index=0)
+
 def get_args():
     parser = argparse.ArgumentParser(description='MultiMAE Finetune script', add_help=False)
+    parser.add_argument('--test', action='store_true', help='Perform testing only')
+    parser.add_argument('--in_domains', default='rgb', help='Perform testing only')
     parser.add_argument('-c', '--config', default='cfgs/combine_cls.yaml', type=str, metavar='FILE',
                         help='YAML config file specifying default arguments')
     parser.add_argument('--scale', type=str, default='None', help='New: (0.6, 1.0), old: None')
@@ -322,8 +407,10 @@ def get_args():
     print(args)
     return args
 
-
 if __name__ == '__main__':
-
     args = get_args()
-    run_one_time(args)
+    if not args.test:
+        run_one_time(args)
+    else:
+        print("Only testing...")
+        run_one_test(args)

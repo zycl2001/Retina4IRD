@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, cohen
 import matplotlib
 matplotlib.use('agg')
 import numpy as np
-
+from utils.combine_both_eyes import combine_both_eyes
 import torch.backends.cudnn as cudnn
 
 from utils.datasets_multi_cls import build_dataset_only_testing
@@ -317,7 +317,7 @@ def only_testing(args, model_path,phase='test'):
     interpolate_pos_embed_vit(model, checkpoint_model)
 
     msg = model.load_state_dict(checkpoint_model, strict=False)
-    print(msg)
+    # print(msg)
     assert msg.missing_keys == []
 
 
@@ -329,6 +329,11 @@ def only_testing(args, model_path,phase='test'):
 
     csv_data_path=os.path.join(args.csv_path, f'{phase}.xlsx')
     save_pred_res(prediction, args, csv_data_path,csv_name=os.path.join(model_path, f'{phase}_predict.csv'))
+
+    if args.combine_eyes:
+        # combine both eyes
+        root_dir = args.output_dir
+        combine_both_eyes(root_dir)
 
 
 if __name__ == '__main__':
