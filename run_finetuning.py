@@ -503,7 +503,7 @@ def set_gene_label(args):
 
         mapped = gene_col_lower.map(gene_mapping)
 
-        if args.label_column not in df.columns:
+        if args.label_column in df.columns:
             df = df.drop(columns=[args.label_column])
 
         df[args.label_column] = mapped.where(~is_nan, 0).fillna(16).astype(int)
