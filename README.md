@@ -43,7 +43,7 @@ Obtain the Retina4IRD pre-training weights on (https://drive.google.com/drive/fo
 
 - Open the terminal in the system.
 
-- Clone this repo file to the home path.
+- Clone this repository to the home directory.
 
 ```
 git clone https://github.com/zycl2001/Retina4IRD.git
