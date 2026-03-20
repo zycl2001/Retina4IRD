@@ -154,6 +154,7 @@ sh run_myEye_parms.sh
 After running ImageModel, you can run the following script to test the combined model.
 ```
 export CUDA_VISIBLE_DEVICES=0
+
 conda activate retina4IRD
 
 python myEyeTenClassfication.py \
