@@ -196,11 +196,11 @@ During fine-tuning, the images and labels of each modality are stored in CSV fil
     	├──2.png
     	...
 ```
-| ID  | cfp/oct | age | ... | gene |
-|:---:|:-------:|:---:|:---:|:-----------:|
-|  1  |  1.jpg  | 15  | ... |   gene_1    |
-|  2  |  2.jpg  | 18  | ... |   gene_2    |
-| ... |   ...   | ... | ... |    ....     |
+| ID  | cfp |  oct    | age | ... | gene |
+|:---:|:-------:|:-------:|:---:|:---:|:-----------:|
+|  1  |  1.jpg  |  1.jpg  | 15  | ...  |   gene_1    |
+|  2  |  2.jpg  |  2.jpg  | 18  | ... |   gene_2    |
+| ... |   ...   |         | ... | ... |    ....     |
 
 
 
