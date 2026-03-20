@@ -111,12 +111,11 @@ You can run the script below to test the image.
 ```
 export CUDA_VISIBLE_DEVICES=0
 
-conda activate multimae
+conda activate retina4IRD
 
 python run_finetuning.py \
 --nb_classes 17 \
 --gene gene \
---traintest True \
 --test \
 --combine_eyes False \
 --label_column gene_label \
@@ -155,11 +154,12 @@ sh run_myEye_parms.sh
 After running ImageModel, you can run the following script to test the combined model.
 ```
 export CUDA_VISIBLE_DEVICES=0
-conda activate multimae
+conda activate retina4IRD
 
 python myEyeTenClassfication.py \
 --count 6 \
 --weight 0.974 \
+--test \
 --seed_count 5 \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
