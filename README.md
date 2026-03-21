@@ -87,89 +87,6 @@ Please download Retina4IRD weights (https://drive.google.com/drive/folders/1Wxbk
 /weights/combine_models/Retina4IRD_combineModel_OCT.pkl
 ```
 
-## 🌱Fine-tuning with Retina4IRD Image Model Weights
-
-### 1. Configuration of Image Model
-You can set image model training parameters in the `/cfgs/image_cls.yaml` file
-```
-nb_classes: number of classes
-gene: 'gene'
-csv_path: Your csv_path
-data_path: Your image_path
-.....
-```
-### 2. Run script file
-```
-cd /script
-sh target.sh
-```
-- Training scripts support YAML configuration files and command-line parameters.
-- Parameters specified in the configuration file override the default settings, while command-line parameters override both the default and configured parameters.
-
-### 3. Inference
-You can run the script below to test the image.
-```
-export CUDA_VISIBLE_DEVICES=0
-
-conda activate retina4IRD
-
-python run_finetuning.py \
---nb_classes 17 \
---gene gene \
---test \
---combine_eyes False \
---label_column gene_label \
---finetune in21k \
---weight_cfp /weights/image_models/Retina4IRD_CFP_checkpoint.pth \
---weight_oct /weights/image_models/Retina4IRD_OCT_checkpoint.pth \
---data_path YOUR_IMAGE_PATH \
---csv_path YOUR_CSV_PATH \
---output_dir YOUR_OUTPUT_DIR \
---epochs 50 \
---batch_size 32 \
---blr 0.005 \
---input_size 224 \
---use_mean_pooling True \
---in_domains rgb
-```
-
-## 🌱Fine-tuning with Retina4IRD Combined Model Weights
-### 1. Configuration of Combine Model
-You can set image model training parameters in the `/cfgs/combine_cls.yaml` file
-```
-csv_path: Your csv_path
-output_dir: Your output path
-....
-```
-
-### 2. Run script file
-```
-cd /script
-sh run_myEye_parms.sh
-```
-- Training scripts support YAML configuration files and command-line parameters.
-- Parameters specified in the configuration file override the default settings, while command-line parameters override both the default and configured parameters.
-
-### 3. Inference
-After running ImageModel, you can run the following script to test the combined model.
-```
-export CUDA_VISIBLE_DEVICES=0
-
-conda activate retina4IRD
-
-python myEyeTenClassfication.py \
---count 6 \
---weight 0.974 \
---test \
---seed_count 5 \
---csv_path YOUR_CSV_PATH \
---output_dir YOUR_OUTPUT_DIR \
---combine_weight_cfp /weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
---combine_weight_oct /weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
---label_column gene_label \
---in_domains rgb
-```
-
 ## 📝Prepare the datasets
 
 During fine-tuning, the images and labels of each modality are stored in CSV files: `train.csv`, `val.csv`, and `test.csv`, corresponding to the training, validation, and test sets, respectively. These files should be placed in the same directory. In each CSV file, `cfp` and `oct` indicate the image names for the corresponding modalities, `age` and other columns represent patient meta information, and `gene` denotes the associated hereditary eye disease. For paired-modality fine-tuning, each row contains paired data from two or more modalities.
@@ -201,6 +118,105 @@ During fine-tuning, the images and labels of each modality are stored in CSV fil
 |  1  |  1.jpg  |  1.jpg  | 15  | ...  |   gene_1    |
 |  2  |  2.jpg  |  2.jpg  | 18  | ... |   gene_2    |
 | ... |   ...   |         | ... | ... |    ....     |
+
+## 🌱Fine-tuning with Retina4IRD Image Model Weights
+
+### 1. Configuration of Image Model
+You can set image model training parameters in the `/cfgs/image_cls.yaml` file
+```
+nb_classes: number of classes
+gene: 'gene'
+csv_path: Your csv_path
+data_path: Your image_path
+.....
+```
+### 2. Finetuning
+The following commands fine-tune the pre-trained Retina4IRD Image Model Weights.
+```
+python run_finetuning.py \
+--gene gene \
+--label_column gene_label \
+--weight_cfp /weights/image_models/Retina4IRD_CFP_checkpoint.pth \
+--weight_oct /weights/image_models/Retina4IRD_OCT_checkpoint.pth \
+--data_path YOUR_IMAGE_PATH \
+--csv_path YOUR_CSV_PATH \
+--output_dir YOUR_OUTPUT_DIR \
+--epochs 50 \
+--batch_size 32 \
+--blr 0.005 \
+--input_size 224 \
+--in_domains rgb
+```
+
+You can also run it using the script below.
+```
+cd /script
+sh target.sh
+```
+- Training scripts support YAML configuration files and command-line parameters.
+- Parameters specified in the configuration file override the default settings, while command-line parameters override both the default and configured parameters.
+
+### 3. Inference
+You can run the script below to test the image.
+```
+cd /inference
+python inference_retina4IRD_image_model_for_multiclass_classification.py \
+--gene gene \
+--test \
+--label_column gene_label \
+--weight_cfp /weights/image_models/Retina4IRD_CFP_checkpoint.pth \
+--weight_oct /weights/image_models/Retina4IRD_OCT_checkpoint.pth \
+--data_path YOUR_IMAGE_PATH \
+--csv_path YOUR_CSV_PATH \
+--output_dir YOUR_OUTPUT_DIR \
+--input_size 224 \
+--in_domains rgb
+```
+
+## 🌱Fine-tuning with Retina4IRD Combined Model Weights
+### 1. Configuration of Combine Model
+You can set image model training parameters in the `/cfgs/combine_cls.yaml` file
+```
+csv_path: Your csv_path
+output_dir: Your output path
+....
+```
+
+### 2. Finetuning
+The following commands fine-tune the pre-trained Retina4IRD Combined Model Weights.
+```
+python myEyeTenClassfication.py \
+--csv_path YOUR_CSV_PATH \
+--output_dir YOUR_OUTPUT_DIR \
+--combine_weight_cfp /weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct /weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--label_column gene_label \
+--in_domains rgb
+```
+You can also run it using the script below.
+```
+cd /script
+sh run_myEye_parms.sh
+```
+- Training scripts support YAML configuration files and command-line parameters.
+- Parameters specified in the configuration file override the default settings, while command-line parameters override both the default and configured parameters.
+
+### 3. Inference
+After running ImageModel, you can run the following script to test the combined model.
+```
+cd /inference
+
+python inference_retina4IRD_combine_model_for_multiclass_classification.py \
+--test \
+--csv_path YOUR_CSV_PATH \
+--output_dir YOUR_OUTPUT_DIR \
+--combine_weight_cfp /weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct /weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--label_column gene_label \
+--in_domains rgb
+```
+
+
 
 
 
