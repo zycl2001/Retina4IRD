@@ -136,8 +136,8 @@ The following commands fine-tune the pre-trained Retina4IRD Image Model Weights.
 python run_finetuning.py \
 --gene gene \
 --label_column gene_label \
---weight_cfp /weights/image_models/Retina4IRD_CFP_checkpoint.pth \
---weight_oct /weights/image_models/Retina4IRD_OCT_checkpoint.pth \
+--weight_cfp ./weights/image_models/Retina4IRD_CFP_checkpoint.pth \
+--weight_oct ./weights/image_models/Retina4IRD_OCT_checkpoint.pth \
 --data_path YOUR_IMAGE_PATH \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
@@ -159,20 +159,20 @@ sh target.sh
 ### 3. Inference
 You can run the script below to test the image.
 ```
-cd inference/
-
 python inference_retina4IRD_image_model_for_multiclass_classification.py \
 --gene gene \
 --test \
 --label_column gene_label \
---weight_cfp /weights/image_models/Retina4IRD_CFP_checkpoint.pth \
---weight_oct /weights/image_models/Retina4IRD_OCT_checkpoint.pth \
+--weight_cfp ./weights/image_models/Retina4IRD_CFP_checkpoint.pth \
+--weight_oct ./weights/image_models/Retina4IRD_OCT_checkpoint.pth \
 --data_path YOUR_IMAGE_PATH \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
 --input_size 224 \
 --in_domains rgb
 ```
+
+
 
 ## 🌱Fine-tuning with Retina4IRD Combined Model Weights
 ### 1. Configuration of Combine Model
@@ -189,8 +189,8 @@ The following commands fine-tune the pre-trained Retina4IRD Combined Model Weigh
 python myEyeTenClassfication.py \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
---combine_weight_cfp /weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
---combine_weight_oct /weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--combine_weight_cfp ./weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct ./weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
 --label_column gene_label \
 --in_domains rgb
 ```
@@ -205,19 +205,15 @@ sh run_myEye_parms.sh
 ### 3. Inference
 After running ImageModel, you can run the following script to test the combined model.
 ```
-cd inference/
-
 python inference_retina4IRD_combine_model_for_multiclass_classification.py \
 --test \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
---combine_weight_cfp /weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
---combine_weight_oct /weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--combine_weight_cfp ./weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct ./weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
 --label_column gene_label \
 --in_domains rgb
 ```
-
-
 
 
 

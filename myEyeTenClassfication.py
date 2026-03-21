@@ -205,8 +205,6 @@ def pre_score(label_column,model_index, meta_data_dir, output_dir):
         if not os.path.exists(scaler_set_path):
             os.makedirs(scaler_set_path)
 
-        # scaler_path = os.path.join(scaler_set_path, 'scaler.joblib')
-        # dump(scaler, scaler_path)
 
 
     l0_models = [
