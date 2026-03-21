@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 import warnings
-
+os.environ["OMP_NUM_THREADS"] = str(os.cpu_count())
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 model_type = [['age', 'sex', 'continue_time', 'sick_age', 'genetics', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','10','11','12','13','14','15','16']]
@@ -84,31 +84,33 @@ def run_one_test(args):
 
 def get_args():
     parser = argparse.ArgumentParser(description='MultiMAE Finetune script', add_help=False)
-    parser.add_argument('--test', action='store_true', help='Perform testing only')
-    parser.add_argument('--in_domains', default='rgb', help='Perform testing only')
-    parser.add_argument('--csv_path', type=str, default='', help='Perform testing only')
-    parser.add_argument('--output_dir', type=str, default='', help='Perform testing only')
-    parser.add_argument('--label_column', type=str, default='', help='Perform testing only')
-    parser.add_argument('--combine_weight_cfp', type=str, default='', help='Perform testing only')
-    parser.add_argument('--combine_weight_oct', type=str, default='', help='Perform testing only')
-    parser.add_argument('-c', '--config', default='cfgs/combine_cls.yaml', type=str, metavar='FILE',
-                        help='YAML config file specifying default arguments')
-    parser.add_argument('--scale', type=str, default='None', help='New: (0.6, 1.0), old: None')
-    args_config, remaining = parser.parse_known_args()
-    if args_config.config:
-        with open(args_config.config, 'r') as f:
-            cfg = yaml.safe_load(f)
-            parser.set_defaults(**cfg)
 
-    args = parser.parse_args(remaining)
+    parser.add_argument('--test', action='store_true')
+    parser.add_argument('--in_domains', default='rgb')
+    parser.add_argument('--csv_path', type=str, default='')
+    parser.add_argument('--output_dir', type=str, default='')
+    parser.add_argument('--label_column', type=str, default='')
+    parser.add_argument('--combine_weight_cfp', type=str, default='')
+    parser.add_argument('--combine_weight_oct', type=str, default='')
+    parser.add_argument('-c', '--config', default='cfgs/combine_cls.yaml', type=str)
+    parser.add_argument('--scale', type=str, default='None')
+
+    args = parser.parse_args()
+
+    if args.config:
+        with open(args.config, 'r') as f:
+            cfg = yaml.safe_load(f)
+
+        for k, v in cfg.items():
+            if hasattr(args, k):  # 防止yaml多余字段
+                if getattr(args, k) == parser.get_default(k):
+                    setattr(args, k, v)
 
     if args.scale == 'None':
         args.scale = None
     else:
-        try:
-            args.scale = ast.literal_eval(args.scale)
-        except (ValueError, SyntaxError):
-            raise ValueError("Invalid format for --scale. Must be a tuple or 'None'.")
+        args.scale = ast.literal_eval(args.scale)
+
     print(args)
     return args
 
