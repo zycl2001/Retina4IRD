@@ -6,7 +6,7 @@ test: False
 csv_path: Your csv_path
 output_dir: Your output path
 
-combine_weight_cfp: "/weights/combine_models/Retina4IRD_combineModel_CFP.pkl"
-combine_weight_oct: "/weights/combine_models/Retina4IRD_combineModel_OCT.pkl"
+combine_weight_cfp: "./weights/combine_models/Retina4IRD_combineModel_CFP.pkl"
+combine_weight_oct: "./weights/combine_models/Retina4IRD_combineModel_OCT.pkl"
 
 label_column: 'gene_label'

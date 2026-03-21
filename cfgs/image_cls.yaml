@@ -10,13 +10,13 @@ combine_eyes: False
 label_column: 'gene_label'
 finetune: 'finetune'
 
-weight_cfp: "/data/hdd/zhengyi/retfound_weight/RETFound_mae_natureCFP.pth"
-weight_oct: "/data/hdd/zhengyi/retfound_weight/RETFound_mae_natureOCT.pth"
-data_path: "/data/hdd/zhengyi/zhengyi/IRD_Model_Training/downstream_data/IRD/task2_gene_20250320_17label/image_trainValTest/"
-csv_path: "/data/hdd/zhengyi/zhengyi/IRD_Model_Training/downstream_data/IRD/test/train_val_test/"
+weight_cfp: "./weights/image_models/Retina4IRD_CFP_checkpoint.pth"
+weight_oct: "./weights/image_models/Retina4IRD_OCT_checkpoint.pth"
+data_path: Your image_path
+csv_path: Your csv_path
 resume: ''
 
-output_dir: "/data/hdd/zhengyi/zhengyi/IRD_Model_Training/downstream_data/IRD/test/train_val_test/test/"
+output_dir: output path
 
 seed_count: 5
 epochs: 50
