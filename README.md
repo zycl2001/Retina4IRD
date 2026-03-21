@@ -150,7 +150,7 @@ python run_finetuning.py \
 
 You can also run it using the script below.
 ```
-cd /script
+cd script/
 sh target.sh
 ```
 - Training scripts support YAML configuration files and command-line parameters.
@@ -159,7 +159,8 @@ sh target.sh
 ### 3. Inference
 You can run the script below to test the image.
 ```
-cd /inference
+cd inference/
+
 python inference_retina4IRD_image_model_for_multiclass_classification.py \
 --gene gene \
 --test \
@@ -195,7 +196,7 @@ python myEyeTenClassfication.py \
 ```
 You can also run it using the script below.
 ```
-cd /script
+cd script/
 sh run_myEye_parms.sh
 ```
 - Training scripts support YAML configuration files and command-line parameters.
@@ -204,7 +205,7 @@ sh run_myEye_parms.sh
 ### 3. Inference
 After running ImageModel, you can run the following script to test the combined model.
 ```
-cd /inference
+cd inference/
 
 python inference_retina4IRD_combine_model_for_multiclass_classification.py \
 --test \
