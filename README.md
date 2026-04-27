@@ -175,7 +175,7 @@ python inference_retina4IRD_image_model_for_multiclass_classification.py \
 
 
 ## 🌱Fine-tuning with Retina4IRD Combined Model Weights
-### 1. Configuration of Combine Model
+### 1. Configuration of Combined Model
 You can set image model training parameters in the `/cfgs/combine_cls.yaml` file
 ```
 csv_path: Your csv_path
