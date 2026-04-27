@@ -27,11 +27,11 @@ Obtain the Retina4IRD pre-training weights on (https://drive.google.com/drive/fo
 <td align="center"><a href="https://drive.google.com/file/d/1jE-AGclX4dHLMGCFKisqQqCmufAlBLTL/view?usp=drive_link">access</a></td>
 </tr>
 <!-- TABLE BODY -->
-<tr><td align="left">Retina4IRD_combineModel_CFP</td>
-<td align="center"><a href="https://drive.google.com/file/d/1jE-AGclX4dHLMGCFKisqQqCmufAlBLTL/view?usp=drive_link">access</a></td>
+<tr><td align="left">Retina4IRD_combinedModel_CFP</td>
+<td align="center"><a href="https://drive.google.com/file/d/1K9Tmwh3DGFf12s_zrwhGoHnT6BVddQkF/view?usp=drive_link">access</a></td>
 </tr>
 <!-- TABLE BODY -->
-<tr><td align="left">Retina4IRD_combineModel_OCT</td>
+<tr><td align="left">Retina4IRD_combinedModel_OCT</td>
 <td align="center"><a href="https://drive.google.com/file/d/1FisgU_tzBqve6qlZfcvJXW1ayS8K0ku1/view?usp=drive_link">access</a></td>
 </tr>
 </tbody></table>
