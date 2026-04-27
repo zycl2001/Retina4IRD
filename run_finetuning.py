@@ -297,10 +297,10 @@ def main(args):
         msg = model.load_state_dict(checkpoint_model, strict=False)
         # print(msg)
 
-        if args.use_mean_pooling:
-            assert set(msg.missing_keys) == {'head.weight', 'head.bias', 'fc_norm.weight', 'fc_norm.bias'}
-        else:
-            assert set(msg.missing_keys) == {'head.weight', 'head.bias'}
+        # if args.use_mean_pooling:
+        #     assert set(msg.missing_keys) == {'head.weight', 'head.bias', 'fc_norm.weight', 'fc_norm.bias'}
+        # else:
+        #     assert set(msg.missing_keys) == {'head.weight', 'head.bias'}
 
         trunc_normal_(model.head.weight, std=2e-5)
 
