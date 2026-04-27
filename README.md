@@ -83,8 +83,8 @@ pip install -r requirements.txt
 Please download Retina4IRD weights (https://drive.google.com/drive/folders/1WxbkPx1npybuDoNuJZdyzIkbgInWReBJ?usp=drive_link) and place them in the /weights directory
 /weights/image_models/Retina4IRD_CFP_checkpoint.pth
 /weights/image_models/Retina4IRD_OCT_checkpoint.pth
-/weights/combine_models/Retina4IRD_combineModel_CFP.pkl
-/weights/combine_models/Retina4IRD_combineModel_OCT.pkl
+/weights/combine_models/Retina4IRD_combinedModel_CFP.pkl
+/weights/combine_models/Retina4IRD_combinedModel_OCT.pkl
 ```
 
 ## 📝Prepare the datasets
@@ -189,8 +189,8 @@ The following commands fine-tune the pre-trained Retina4IRD Combined Model Weigh
 python myEyeTenClassfication.py \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
---combine_weight_cfp ./weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
---combine_weight_oct ./weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--combine_weight_cfp ./weights/combined_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct ./weights/combined_models/Retina4IRD_combineModel_OCT.pkl \
 --label_column gene_label \
 --in_domains rgb
 ```
@@ -209,8 +209,8 @@ python inference_retina4IRD_combine_model_for_multiclass_classification.py \
 --test \
 --csv_path YOUR_CSV_PATH \
 --output_dir YOUR_OUTPUT_DIR \
---combine_weight_cfp ./weights/combine_models/Retina4IRD_combineModel_CFP.pkl \
---combine_weight_oct ./weights/combine_models/Retina4IRD_combineModel_OCT.pkl \
+--combine_weight_cfp ./weights/combined_models/Retina4IRD_combineModel_CFP.pkl \
+--combine_weight_oct ./weights/combined_models/Retina4IRD_combineModel_OCT.pkl \
 --label_column gene_label \
 --in_domains rgb
 ```
