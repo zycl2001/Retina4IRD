@@ -115,8 +115,8 @@ During fine-tuning, the images and labels of each modality are stored in CSV fil
 ```
 | ID  | cfp |  oct    | age | ... | gene |
 |:---:|:-------:|:-------:|:---:|:---:|:-----------:|
-|  1  |  1.jpg  |  1.jpg  | 15  | ...  |   gene_1    |
-|  2  |  2.jpg  |  2.jpg  | 18  | ... |   gene_2    |
+|  1  |  cfp/1.jpg  |  oct/1.jpg  | 15  | ...  |   gene_1    |
+|  2  |  cfp/2.jpg  |  oct/2.jpg  | 18  | ... |   gene_2    |
 | ... |   ...   |         | ... | ... |    ....     |
 
 ## 🌱Fine-tuning with Retina4IRD Image Model Weights
