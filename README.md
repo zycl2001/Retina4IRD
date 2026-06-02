@@ -11,7 +11,7 @@
 5. [Prepare the datasets](#prepare-the-datasets)
 
 ## 📃Download  the pretrained weights of Retina4IRD
-Obtain the Retina4IRD pre-training weights on (https://drive.google.com/drive/folders/1WxbkPx1npybuDoNuJZdyzIkbgInWReBJ?usp=drive_link)
+Obtain the Retina4IRD pre-training weights on (https://huggingface.co/zycl2001/Retina4IRD)
 
 <table><tbody>
 <!-- START TABLE -->
@@ -20,19 +20,19 @@ Obtain the Retina4IRD pre-training weights on (https://drive.google.com/drive/fo
 <th valign="bottom">Source</th>
 <!-- TABLE BODY -->
 <tr><td align="left">Retina4IRD_imageModel_CFP</td>
-<td align="center"><a href="https://drive.google.com/file/d/1nqUoso8IfCq1gKfLgHrfWiY8XehTza-5/view?usp=drive_link">access</a></td>
+<td align="center"><a href="https://huggingface.co/zycl2001/Retina4IRD/tree/main/image_model">access</a></td>
 </tr>
 <!-- TABLE BODY -->
 <tr><td align="left">Retina4IRD_imageModel_OCT</td>
-<td align="center"><a href="https://drive.google.com/file/d/1jE-AGclX4dHLMGCFKisqQqCmufAlBLTL/view?usp=drive_link">access</a></td>
+<td align="center"><a href="https://huggingface.co/zycl2001/Retina4IRD/tree/main/image_model">access</a></td>
 </tr>
 <!-- TABLE BODY -->
 <tr><td align="left">Retina4IRD_combinedModel_CFP</td>
-<td align="center"><a href="https://drive.google.com/file/d/1K9Tmwh3DGFf12s_zrwhGoHnT6BVddQkF/view?usp=drive_link">access</a></td>
+<td align="center"><a href="https://huggingface.co/zycl2001/Retina4IRD/tree/main/combine_model">access</a></td>
 </tr>
 <!-- TABLE BODY -->
 <tr><td align="left">Retina4IRD_combinedModel_OCT</td>
-<td align="center"><a href="https://drive.google.com/file/d/1FisgU_tzBqve6qlZfcvJXW1ayS8K0ku1/view?usp=drive_link">access</a></td>
+<td align="center"><a href="https://huggingface.co/zycl2001/Retina4IRD/tree/main/combine_model">access</a></td>
 </tr>
 </tbody></table>
 
