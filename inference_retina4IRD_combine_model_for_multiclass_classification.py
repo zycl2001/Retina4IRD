@@ -102,7 +102,7 @@ def get_args():
             cfg = yaml.safe_load(f)
 
         for k, v in cfg.items():
-            if hasattr(args, k):  # 防止yaml多余字段
+            if hasattr(args, k):
                 if getattr(args, k) == parser.get_default(k):
                     setattr(args, k, v)
 
