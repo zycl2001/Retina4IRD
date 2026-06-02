@@ -80,7 +80,7 @@ pip install -r requirements.txt
 3. Download Weight
 
 ```
-Please download Retina4IRD weights (https://drive.google.com/drive/folders/1WxbkPx1npybuDoNuJZdyzIkbgInWReBJ?usp=drive_link) and place them in the /weights directory
+Please download Retina4IRD weights (https://huggingface.co/zycl2001/Retina4IRD) and place them in the /weights directory
 /weights/image_models/Retina4IRD_CFP_checkpoint.pth
 /weights/image_models/Retina4IRD_OCT_checkpoint.pth
 /weights/combined_models/Retina4IRD_combinedModel_CFP.pkl
